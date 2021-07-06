@@ -1,0 +1,4 @@
+LIBRARY	"NoDesktopWM"
+EXPORTS
+    DllGetClassObject   PRIVATE
+    DllCanUnloadNow     PRIVATE
