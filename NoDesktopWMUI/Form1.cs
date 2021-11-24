@@ -40,9 +40,27 @@ namespace NoDesktopWMUI
 
         private void FindAndInjectToExplorer()
         {
-            string dllPath = Path.Combine(Directory.GetCurrentDirectory(), "NoDesktopWM.dll");
+            string dllPath;
+
+            if(IntPtr.Size == 8)
+            {
+                //x64
+                dllPath = Path.Combine(Directory.GetCurrentDirectory(), "x64", "NoDesktopWM.dll");
+            }
+            else
+            {
+                //x86
+                dllPath = Path.Combine(Directory.GetCurrentDirectory(), "x86", "NoDesktopWM.dll");
+            }
+
             string explorerName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows),"explorer.exe").ToLower();
             Process[] processlist = Process.GetProcesses();
+
+            if (!File.Exists(dllPath))
+            {
+                MessageBox.Show(string.Format("{0} not found!",dllPath),"Error");
+                return;
+            }
 
             foreach(Process process in processlist)
             {
@@ -63,6 +81,7 @@ namespace NoDesktopWMUI
 
                         if (alreadyAttached)
                         {
+                            Trace.WriteLine("already attached");
                             continue;
                         }
 
